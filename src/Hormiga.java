@@ -1,3 +1,10 @@
+
+/**
+ * @author Gillermo Rivero
+ * @author Boris Ballester
+ * @author Cristian Luis
+ */
+
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;

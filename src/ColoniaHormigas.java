@@ -1,3 +1,10 @@
+
+/**
+ * @author Gillermo Rivero
+ * @author Boris Ballester
+ * @author Cristian Luis
+ */
+
 import java.util.ArrayList;
 
 class ColoniaHormigas{
