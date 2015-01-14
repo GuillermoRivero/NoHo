@@ -1,0 +1,15 @@
+/jade/
+/jade-main.html
+/FIPA/
+/fipa.idl
+/ColoniaHormigas.class
+/Constante.class
+/Hormiga$ComportamientoBuscador.class
+/Hormiga$ComportamientoCiclico.class
+/Hormiga$ComportamientoOneShot.class
+/Hormiga$ComportamientoRecolector.class
+/Hormiga.class
+/Mapa.class
+/Planta.class
+/Posicion.class
+/Hormiguero.class
