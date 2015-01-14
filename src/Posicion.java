@@ -39,5 +39,13 @@ public class Posicion {
 	public void setY(int y) {
 		this.y = y;
 	}
+        
+        public boolean equal(Posicion comp){
+            if ((comp.getX() == x) && (comp.getY() == y)){
+                return true;
+            } else {
+                return false;
+            }
+        }
 	
 }

@@ -1,4 +1,7 @@
 
+import java.util.ArrayList;
+
+
 /**
  * @author Gillermo Rivero
  * @author Boris Ballester
@@ -6,7 +9,5 @@
  */
 
 public class Mapa {
-
-    
     
 }
