@@ -19,7 +19,7 @@ public class Mapa {
 	private List<Planta> m_plantas;
 	
 	//CONSTRUCTOR
-    public Mapa(int filas, int columnas, List<Hormiguero> hormigueros, List<Planta> plantas ){
+    public Mapa(int filas, int columnas, List<Hormiguero> hormigueros, List<Planta> plantas){
     	this.setPlantas(plantas);
     	this.setHormigueros(hormigueros);
     	this.setMapaFeromonas(new int [filas][columnas]);
@@ -83,7 +83,7 @@ public class Mapa {
 		for(int i = 0; i < this.m_hormigueros.size();i++){
 			List<Hormiga> hormigasHormiguero = this.m_hormigueros.get(i).getListaHormigas();
 			for(int j = 0; j<hormigasHormiguero.size();j++){
-				Posicion posicionHormiga = hormigasHormiguero.get(j).getPos();
+				Posicion posicionHormiga = hormigasHormiguero.get(j).posicion;
 				int valorCelda = getPosMapaMundi(posicionHormiga);
 				switch(valorCelda){
 					case 0:
@@ -158,76 +158,16 @@ public class Mapa {
 		return matrizAdyacencia;
 	}
 	
-		public int[][] obtenerFeromonas(Posicion pos){
-		int[][] matrizAdyacencia = new int[3][3];
-		
-		int filas = this.m_mapaMundi.length;
-		int columnas = this.m_mapaMundi[0].length;
-		
-		//NORTE
-		if(pos.x - 1 < 0){
-			matrizAdyacencia[0][1] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[0][1] = getPosMapaFeromonas(new Posicion(pos.x-1,pos.y));
-		}
-		//SUR
-		if(pos.x + 1 >= filas){
-			matrizAdyacencia[2][1] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[2][1] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y));
-		}		
-		//ESTE
-		if(pos.y + 1 >= columnas){
-			matrizAdyacencia[1][2] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[1][2] = getPosMapaFeromonas(new Posicion(pos.x,pos.y+1));
-		}			
-		//OESTE
-		if(pos.y - 1 < 0){
-			matrizAdyacencia[1][0] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[1][0] = getPosMapaFeromonas(new Posicion(pos.x,pos.y-1));
-		}					
-		//NOROESTE 
-		if(pos.x - 1 < 0 || pos.y - 1 < 0 ){
-			matrizAdyacencia[0][0] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[0][0] = getPosMapaFeromonas(new Posicion(pos.x-1,pos.y-1));
-		}		
-		//NORESTE
-		if(pos.x - 1 < 0 || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[2][2] = getPosMapaFeromonas(new Posicion(pos.x-1,pos.y+1));
-		}	
-		//SUROESTE
-		if(pos.x + 1 >= filas || pos.y - 1 < 0){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[2][2] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y-1));
-		}			
-		//SURESTE
-		if(pos.x + 1 >= filas || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][0] = 1;//BLOQUEADA
-		}else{
-			matrizAdyacencia[2][0] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y+1));
-		}
-		//CENTRO
-		matrizAdyacencia[1][1] = getPosMapaFeromonas(pos);
-		return matrizAdyacencia;
-	}
-        
+	
 	public void avanzar(){
 		for(int i = 0; i < this.m_hormigueros.size();i++){
-                        Hormiguero hormigueroAux = this.m_hormigueros.get(i);
-			List<Hormiga> hormigasHormiguero = hormigueroAux.getListaHormigas();
+			List<Hormiga> hormigasHormiguero = this.m_hormigueros.get(i).getListaHormigas();
 			for(int j = 0; j<hormigasHormiguero.size();j++){
 				Hormiga hormigaAux = hormigasHormiguero.get(j);
-				hormigaAux.mover(obtenerAdyacencia(hormigaAux.getPos()), obtenerFeromonas(hormigaAux.getPos()), hormigueroAux.getPos());
+				//TODO: MOVER HORMIGA
 			}
 			
 		}
-                
 		for(int i = 0; i < this.m_plantas.size();i++){
 			//TODO: MOVER PLANTA
 		}

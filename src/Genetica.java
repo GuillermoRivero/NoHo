@@ -45,28 +45,8 @@ public class Genetica {
     public Genetica(double[] secund, double[] mov) {
         p_secund = secund;
         p_mov = mov;
-        p_volver = Constante.PROB_V_INICIAL;
     }
 
-    public void comprobarGenetica(){
-        System.out.println("Probabilidaddes: ");
-        System.out.println("Prob 0: " + p_secund[0]);
-        System.out.println("Prob 1: " + p_secund[1]);
-        System.out.println("Prob 2: " + p_secund[2]);
-        System.out.println("Prob 3: " + p_secund[3]);
-        System.out.println("Prob 4: " + p_secund[4]);
-        System.out.println("Prob 5: " + p_secund[5]);
-        System.out.println("Mover 0: " + p_mov[0]);
-        System.out.println("Mover 1: " + p_mov[1]);
-        System.out.println("Mover 2: " + p_mov[2]);
-        System.out.println("Mover 3: " + p_mov[3]);
-        System.out.println("Mover 4: " + p_mov[4]);
-        System.out.println("Mover 5: " + p_mov[5]);
-        System.out.println("Mover 6: " + p_mov[6]);
-        System.out.println("Mover 7: " + p_mov[7]);
-        System.out.println("Mover 8: " + p_mov[8]);
-    }
-    
     /**
      * @param comida: si la hormiga ya lleva comida consigo. casa: pocision del
      * hormigero. actual: Pocision actual de la hormiga.
@@ -80,7 +60,7 @@ public class Genetica {
             double vector[] = new double[9];
             for (int i = 0; i < 9; i++) {
                 /* Probabilidad = Prob_Moverse *  Prob_percibido + Prob_Feromonas * Nº de feromonas */
-                vector[i] = (((Math.random() * p_mov[i]) * p_secund[entorno[0][i]]) + p_secund[5] * entorno[1][i]);
+                vector[i] = (Math.random() * p_mov[i]) * p_secund[entorno[1][i]] + p_secund[5] * entorno[2][i];
             }
             double max = vector[0];
             int indice = 0;
@@ -123,7 +103,7 @@ public class Genetica {
         double[] secund = new double[6];
         for (int i = 0; i < 9; i++) {
             alteracion = Math.random();
-            if (alteracion < 0.2) {
+            if (alteracion < 0.1) {
                 double signo = Math.random();
                 if (signo > 0.5) {
                     mov[i] = p_mov[i] + alteracion;
@@ -137,7 +117,7 @@ public class Genetica {
 
         for (int j = 0; j < 6; j++) {
             alteracion = Math.random();
-            if (alteracion < 0.2) {
+            if (alteracion < 0.1) {
                 double signo = Math.random();
                 if (signo > 0.5) {
                     secund[j] = p_secund[j] + alteracion;

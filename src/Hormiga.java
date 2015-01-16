@@ -88,8 +88,8 @@ public class Hormiga {
                 percepcion[1][i + 3 * j] = feromonas[i][j];
             }
         }
+
         Posicion nueva = genes.consultar(comida, percepcion, home, pos);
-        pos = nueva;
         if (comida) {
             if (home.equal(pos)) {
                 comida = false;
