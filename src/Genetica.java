@@ -75,12 +75,17 @@ public class Genetica {
         double tmp = Math.random();
         if (comida && (tmp < p_volver)) {
             food = false;
+            System.out.println("Volviendo a Casa.");
             return volver(casa, actual);
         } else {
             double vector[] = new double[9];
             for (int i = 0; i < 9; i++) {
                 /* Probabilidad = Prob_Moverse *  Prob_percibido + Prob_Feromonas * Nº de feromonas */
-                vector[i] = (((Math.random() * p_mov[i]) * p_secund[entorno[0][i]]) + p_secund[5] * entorno[1][i]);
+                if (entorno[0][i] == 1){
+                    vector[i] = -1000;
+                } else {
+                    vector[i] = (((Math.random() * p_mov[i]) * p_secund[entorno[0][i]]) + p_secund[5] * entorno[1][i]);
+                }
             }
             double max = vector[0];
             int indice = 0;
@@ -90,7 +95,8 @@ public class Genetica {
                     indice = i;
                 }
             }
-            if (vector[indice] > 2) {
+            System.out.println();
+            if (entorno[0][indice] > 2) {
                food = true; 
             } 
             return nuevaPos(indice, actual);
@@ -126,9 +132,9 @@ public class Genetica {
             if (alteracion < 0.2) {
                 double signo = Math.random();
                 if (signo > 0.5) {
-                    mov[i] = p_mov[i] + alteracion;
+                    mov[i] = p_mov[i] + alteracion * 2;
                 } else {
-                    mov[i] = p_mov[i] - alteracion;
+                    mov[i] = p_mov[i] - alteracion * 2;
                 }
             } else {
                 mov[i] = p_mov[i];
@@ -140,9 +146,9 @@ public class Genetica {
             if (alteracion < 0.2) {
                 double signo = Math.random();
                 if (signo > 0.5) {
-                    secund[j] = p_secund[j] + alteracion;
+                    secund[j] = p_secund[j] + alteracion * 2;
                 } else {
-                    secund[j] = p_secund[j] - alteracion;
+                    secund[j] = p_secund[j] - alteracion * 2;
                 }
             } else {
                 secund[j] = p_secund[j];
@@ -166,7 +172,20 @@ public class Genetica {
         if ((indice == 6) || (indice == 7) || (indice == 8)) {
             y++;
         }
-
+        /*
+        if (x < 0){
+            x = 0; 
+        }
+        if (x > (Constante.MAX_MAPA-1)){
+            x = (Constante.MAX_MAPA-1);
+        }
+        if (y < 0){
+            y = 0; 
+        }
+        if (y > (Constante.MAX_MAPA-1)){
+            y = (Constante.MAX_MAPA-1);
+        }
+        */
         return (new Posicion(x, y));
     }
     

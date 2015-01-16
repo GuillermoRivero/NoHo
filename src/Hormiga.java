@@ -89,14 +89,17 @@ public class Hormiga {
             }
         }
         Posicion nueva = genes.consultar(comida, percepcion, home, pos);
+        vida--;
         pos = nueva;
         if (comida) {
             if (home.equal(pos)) {
                 comida = false;
+                vida = vida + 100;
             }
         } else {
             if (genes.comidaEncontrada()) {
                 comida = true;
+                vida = vida + 50;
             }
         }
         return false;

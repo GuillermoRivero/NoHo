@@ -80,10 +80,30 @@ public class Mapa {
 	}
 	
 	public void actualizar(){
+                for (int i = 0; i < this.m_mapaMundi.length; i++){
+                    for (int j = 0; j < this.m_mapaMundi[0].length; j++){
+                        this.m_mapaMundi[i][j] = 0;
+                    }
+                }
+                //Feromonas
+                for (int k = 0; k < m_mapaFeromonas.length; k++){
+                    for (int j = 0; j < m_mapaFeromonas[k].length; j++){
+                        if (getPosMapaFeromonas(new Posicion(k, j)) != 0){
+                            setPosMapaFeromonas(new Posicion(k, j), getPosMapaFeromonas(new Posicion(k, j)) -1);
+                        }
+                    }
+                }
+                
+                //Mapa de agentes
+                for (int i = 0; i < this.m_plantas.size(); i++){
+                    Posicion posicionPlanta = this.m_plantas.get(i).getPos();
+                    setPosMapaMundi(posicionPlanta, 3);
+                }
 		for(int i = 0; i < this.m_hormigueros.size();i++){
 			List<Hormiga> hormigasHormiguero = this.m_hormigueros.get(i).getListaHormigas();
 			for(int j = 0; j<hormigasHormiguero.size();j++){
-				Posicion posicionHormiga = hormigasHormiguero.get(j).getPos();
+                                Hormiga hormigaAux = hormigasHormiguero.get(j);
+				Posicion posicionHormiga = hormigaAux.getPos();
 				int valorCelda = getPosMapaMundi(posicionHormiga);
 				switch(valorCelda){
 					case 0:
@@ -93,9 +113,10 @@ public class Mapa {
 						setPosMapaMundi(posicionHormiga, 4);
 						break;
 				}
-				//TODO: FEROMONAS
+				if (hormigaAux.isComida()){
+                                    setPosMapaFeromonas(posicionHormiga, 5);
+                                }
 			}
-			
 		}
 	}
 	
@@ -137,21 +158,21 @@ public class Mapa {
 		}		
 		//NORESTE
 		if(pos.x - 1 < 0 || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
+			matrizAdyacencia[0][2] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][2] = getPosMapaMundi(new Posicion(pos.x-1,pos.y+1));
+			matrizAdyacencia[0][2] = getPosMapaMundi(new Posicion(pos.x-1,pos.y+1));
 		}	
 		//SUROESTE
 		if(pos.x + 1 >= filas || pos.y - 1 < 0){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
+			matrizAdyacencia[2][0] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][2] = getPosMapaMundi(new Posicion(pos.x+1,pos.y-1));
+			matrizAdyacencia[2][0] = getPosMapaMundi(new Posicion(pos.x+1,pos.y-1));
 		}			
 		//SURESTE
 		if(pos.x + 1 >= filas || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][0] = 1;//BLOQUEADA
+			matrizAdyacencia[2][2] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][0] = getPosMapaMundi(new Posicion(pos.x+1,pos.y+1));
+			matrizAdyacencia[2][2] = getPosMapaMundi(new Posicion(pos.x+1,pos.y+1));
 		}
 		//CENTRO
 		matrizAdyacencia[1][1] = getPosMapaMundi(pos);
@@ -196,21 +217,21 @@ public class Mapa {
 		}		
 		//NORESTE
 		if(pos.x - 1 < 0 || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
+			matrizAdyacencia[0][2] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][2] = getPosMapaFeromonas(new Posicion(pos.x-1,pos.y+1));
+			matrizAdyacencia[0][2] = getPosMapaFeromonas(new Posicion(pos.x-1,pos.y+1));
 		}	
 		//SUROESTE
 		if(pos.x + 1 >= filas || pos.y - 1 < 0){
-			matrizAdyacencia[2][2] = 1;//BLOQUEADA
+			matrizAdyacencia[2][0] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][2] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y-1));
+			matrizAdyacencia[2][0] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y-1));
 		}			
 		//SURESTE
 		if(pos.x + 1 >= filas || pos.y + 1 >= columnas ){
-			matrizAdyacencia[2][0] = 1;//BLOQUEADA
+			matrizAdyacencia[2][2] = 1;//BLOQUEADA
 		}else{
-			matrizAdyacencia[2][0] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y+1));
+			matrizAdyacencia[2][2] = getPosMapaFeromonas(new Posicion(pos.x+1,pos.y+1));
 		}
 		//CENTRO
 		matrizAdyacencia[1][1] = getPosMapaFeromonas(pos);
@@ -223,14 +244,52 @@ public class Mapa {
 			List<Hormiga> hormigasHormiguero = hormigueroAux.getListaHormigas();
 			for(int j = 0; j<hormigasHormiguero.size();j++){
 				Hormiga hormigaAux = hormigasHormiguero.get(j);
+                                boolean borrado = hormigaAux.isComida();
 				hormigaAux.mover(obtenerAdyacencia(hormigaAux.getPos()), obtenerFeromonas(hormigaAux.getPos()), hormigueroAux.getPos());
-			}
+                                boolean confirmar = hormigaAux.isComida();
+                                if ((borrado == false) && confirmar){
+                                    System.out.println("Alimento encontrado");
+                                    if (!eliminarPlanta(hormigaAux.getPos())){
+                                        hormigaAux.setComida(false);
+                                        System.err.println("Error 1");
+                                    }
+                                }
+                                
+                        }
 			
 		}
-                
-		for(int i = 0; i < this.m_plantas.size();i++){
-			//TODO: MOVER PLANTA
+                int max = this.m_plantas.size();
+		for(int i = 0; i < max;i++){
+			Planta plantaAux = this.m_plantas.get(i);
+                        if (plantaAux.getContador() > Constante.TIEMPO_REPRODUCCION) {
+                            this.m_plantas.add(new Planta(1, 5, generarPosicion(), "spora"));  
+                            plantaAux.setContador(0);
+                        } else {
+                            plantaAux.setContador(plantaAux.getContador() + 1);
+                        }
 		}
 	}
+        
+        private boolean eliminarPlanta(Posicion pos){
+		for(int i = 0; i < this.m_plantas.size();i++){
+			if (m_plantas.get(i).getPos().equal(pos)){
+                            this.m_plantas.remove(i);
+                            return true;
+                        }
+		}
+                return false;
+        }
+        
+        public Posicion generarPosicion(){
+            int x = (int) Math.round(Math.random() * this.m_mapaMundi.length);
+            int y = (int) Math.round(Math.random() * this.m_mapaMundi[0].length);
+            if (x >= Constante.MAX_MAPA){
+                x = Constante.MAX_MAPA - 1;
+            }
+            if (y >= Constante.MAX_MAPA){
+                y = Constante.MAX_MAPA - 1;
+            }
+            return new Posicion(x, y);
+        }
     
 }

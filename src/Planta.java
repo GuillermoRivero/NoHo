@@ -6,9 +6,12 @@
  */
 
 public class Planta {
+
+    
 	//ATRIBUTOS
 	private int m_id;
 	private int m_vida;
+        private int contador;
 	private Posicion m_posicion;
 	private String m_reproduccion;
 	
@@ -18,6 +21,7 @@ public class Planta {
 		this.setVida(vidaInicial);
 		this.setPos(posInicial);
 		this.setReproduccion(modoReproduccion);
+                this.setContador(0);
 	}
 
 	//SETTERS
@@ -29,6 +33,10 @@ public class Planta {
 		this.m_vida = m_vida;
 	}
 
+        public void setContador(int contador) {
+            this.contador = contador;
+        }
+        
 	public void setPos(Posicion m_pos) {
 		this.m_posicion = m_pos;
 	}
@@ -45,6 +53,10 @@ public class Planta {
 	public int getVida() {
 		return m_vida;
 	}
+        
+        public int getContador() {
+            return contador;
+        }
 
 	public Posicion getPos() {
 		return this.m_posicion;
