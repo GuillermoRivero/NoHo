@@ -13,6 +13,4 @@ public class Interfaz extends JFrame{
     public Interfaz(){
         super ();
     }
-    
-    
 }
