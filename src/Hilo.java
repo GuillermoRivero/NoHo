@@ -26,11 +26,13 @@ public class Hilo implements Runnable {
     public void run() {
         double tp = 0;
         while (true) {
+            
             try {
-                t.sleep(500);
+                t.sleep(10);
             } catch (InterruptedException ex) {
                 System.out.println("Error al dormir el Hilo");
             }
+            
             /*
             Random rnd = new Random();
             for(int i = 0; i < lienzo.filas; i++){
@@ -46,8 +48,8 @@ public class Hilo implements Runnable {
             
             //RECORDAR QUE EL TAMAÑO DEL MAPA SE DEFINE EN EL VENTANA.JAVA
             lienzo.repaint();
-            System.out.println("Tiempo : " + tp);
-            tp= tp+0.5;
+            //System.out.println("Tiempo : " + tp);
+            //tp= tp+0.5;
         }
     }
 

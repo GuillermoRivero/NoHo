@@ -33,7 +33,8 @@ public class Hormiguero {
             int i = 0;
             while (i < n) {
                 for (int j = 0; (j < this.m_listaHormigas.size()) && (i < n); j++) {
-                    hijas.add(new Hormiga(i, m_pos, Constante.TIEMPO_VIDA, (this.m_listaHormigas.get(i).getGenes().heredar())));
+                    hijas.add(new Hormiga(i, m_pos, Constante.TIEMPO_VIDA, (this.m_listaHormigas.get(j).getGenes().heredar())));
+                    i++;
                 }
             }
         } else {

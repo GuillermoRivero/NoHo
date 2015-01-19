@@ -1,11 +1,8 @@
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,32 +15,14 @@ import java.util.logging.Logger;
  */
 public class main {
 
+    private List<Hormiguero> hormigasIniciales;
+    private static Ventana v;
+
     /**
      * @param args
      */
     public static void main(String[] args) throws InterruptedException, IOException {
-        //Generamos genetica inicial
-        Genetica gen_base = new Genetica();
-        List<Hormiga> hormigas = new ArrayList<Hormiga>();
-        List<Planta> plantas = new ArrayList<Planta>();
-        Posicion home = new Posicion(5, 5);
-        Hormiguero tmp = new Hormiguero(home,hormigas);
-        List<Hormiguero> h = new ArrayList<Hormiguero>();
-        h.add(new Hormiguero(home, tmp.GenerarDescendencia(Constante.N_HORMIGAS)));
-        
-        home = new Posicion(1, 1);
-        plantas.add(new Planta(1, 5, home, "spora"));
-        home = new Posicion(Constante.MAX_MAPA_X - 1, Constante.MAX_MAPA_Y - 1);
-        plantas.add(new Planta(1, 5, home, "spora"));
-        home = new Posicion(1, Constante.MAX_MAPA_Y - 1);
-        plantas.add(new Planta(1, 5, home, "spora"));
-        home = new Posicion(Constante.MAX_MAPA_X - 1, 1);
-        plantas.add(new Planta(1, 5, home, "spora"));
-        
-        Mapa map = new Mapa(Constante.MAX_MAPA_X, Constante.MAX_MAPA_Y, h, plantas);
-        int [][] array = map.getMapaMundi();
-        
-        
+
          //Grafica
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -69,20 +48,12 @@ public class main {
         //</editor-fold>
 
         /* Create and display the form */
-        Ventana v = new Ventana();
+        v = new Ventana();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-            v.setVisible(true);
+                v.setVisible(true);
             }
         });
-        
-        map.actualizar();
-        v.setMapa(map.getMapaFeromonas(), map.getMapaMundi());
-        for (int k = 0; k < 700; k++){
-            Thread.sleep(500);
-            map.avanzar();
-            map.actualizar();
-            v.setMapa(map.getMapaFeromonas(), map.getMapaMundi());
-        }
+        v.iniciarSimulacion(3, 20, 10);
     }
 }

@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ public class Panel extends JPanel{
     final BufferedImage imgHormiga;
     private boolean pintarObjetos;
     private boolean pintarFeromonas;
+    List<Posicion> Hormigueros;
     
 
     
@@ -45,8 +47,10 @@ public class Panel extends JPanel{
         tamObjetos = 10;
         pintarObjetos = true;
         pintarFeromonas = true;
+        /* Debug
         System.out.println(filas);
         System.out.println(columnas);
+        */
         Random rnd = new Random();
         for(int i = 0; i < filas; i++){
             for(int j = 0; j < columnas; j++){
@@ -99,6 +103,12 @@ public class Panel extends JPanel{
                 }
             }
         }
+        for (int i = 0; i < this.Hormigueros.size(); i++){
+            Posicion Aux = this.Hormigueros.get(i);
+            int y = Aux.getX() * tamObjetos; int x = Aux.getY()* tamObjetos;
+            dw.setColor(Color.RED);
+            dw.fillRect(x, y, tamObjetos, tamObjetos);
+        }
         
     }
     
@@ -116,6 +126,9 @@ public class Panel extends JPanel{
                 this.matrizFeromonas[i][j] = matrizFeromonas[i][j];
             }
         }
+    }
+    void setHormigueros(List<Posicion> hormigueros){
+        this.Hormigueros = hormigueros;
     }
     void setPintarFeromonas(boolean estado){
         pintarFeromonas = estado;

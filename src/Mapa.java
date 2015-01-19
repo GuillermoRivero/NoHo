@@ -85,7 +85,10 @@ public class Mapa {
         for (int k = 0; k < m_mapaFeromonas.length; k++) {
             for (int j = 0; j < m_mapaFeromonas[k].length; j++) {
                 if (getPosMapaFeromonas(new Posicion(k, j)) != 0) {
-                    setPosMapaFeromonas(new Posicion(k, j), getPosMapaFeromonas(new Posicion(k, j)) - 1);
+                    if (getPosMapaFeromonas(new Posicion(k, j)) == Constante.TIEMPO_FEROMONAS){
+                        setPosMapaFeromonas(new Posicion(k, j), 0);
+                    } else {
+                    setPosMapaFeromonas(new Posicion(k, j), getPosMapaFeromonas(new Posicion(k, j)) + 1);}
                 }
             }
         }
@@ -110,7 +113,7 @@ public class Mapa {
                         break;
                 }
                 if (hormigaAux.isComida()) {
-                    setPosMapaFeromonas(posicionHormiga, Constante.TIEMPO_FEROMONAS);
+                    setPosMapaFeromonas(posicionHormiga, 1);
                 }
             }
         }
@@ -238,28 +241,27 @@ public class Mapa {
         for (int i = 0; i < this.m_hormigueros.size(); i++) {
             Hormiguero hormigueroAux = this.m_hormigueros.get(i);
             List<Hormiga> hormigasHormiguero = hormigueroAux.getListaHormigas();
-            List<Integer> remover = new ArrayList<Integer>();
             for (int j = 0; j < hormigasHormiguero.size(); j++) {
                 Hormiga hormigaAux = hormigasHormiguero.get(j);
                 boolean borrado = hormigaAux.isComida();
                 hormigaAux.mover(obtenerAdyacencia(hormigaAux.getPos()), obtenerFeromonas(hormigaAux.getPos()), hormigueroAux.getPos());
                 boolean confirmar = hormigaAux.isComida();
                 if ((borrado == false) && confirmar) {
-                    System.out.println("Alimento encontrado");
+                    //System.out.println("Alimento encontrado");
                     if (!eliminarPlanta(hormigaAux.getPos())) {
                         hormigaAux.setComida(false);
-                        System.err.println("Error 1");
+                        //System.err.println("Error 1");
                     }
                 }
                 if (!hormigaAux.isAlive()) {
-                    remover.add(new Integer(j));
+                    hormigasHormiguero.remove(hormigaAux);
                 }
-            }
-            for (int j = remover.size() - 1; j >= 0; j--) {
-                hormigasHormiguero.remove(j);
             }
         }
         int max = this.m_plantas.size();
+        if (max > 1000){
+            max = 1000;
+        }
         for (int i = 0; i < max; i++) {
             Planta plantaAux = this.m_plantas.get(i);
             if (plantaAux.getContador() > Constante.TIEMPO_REPRODUCCION) {

@@ -50,21 +50,21 @@ public class Genetica {
 
     public void comprobarGenetica(){
         System.out.println("Probabilidaddes: ");
-        System.out.println("Prob 0: " + p_secund[0]);
-        System.out.println("Prob 1: " + p_secund[1]);
-        System.out.println("Prob 2: " + p_secund[2]);
-        System.out.println("Prob 3: " + p_secund[3]);
-        System.out.println("Prob 4: " + p_secund[4]);
-        System.out.println("Prob 5: " + p_secund[5]);
-        System.out.println("Mover 0: " + p_mov[0]);
-        System.out.println("Mover 1: " + p_mov[1]);
-        System.out.println("Mover 2: " + p_mov[2]);
-        System.out.println("Mover 3: " + p_mov[3]);
-        System.out.println("Mover 4: " + p_mov[4]);
-        System.out.println("Mover 5: " + p_mov[5]);
-        System.out.println("Mover 6: " + p_mov[6]);
-        System.out.println("Mover 7: " + p_mov[7]);
-        System.out.println("Mover 8: " + p_mov[8]);
+        System.out.println("Prob Vacía     : " + p_secund[0]);
+        System.out.println("Prob Muro      : " + p_secund[1]);
+        System.out.println("Prob Hormiga   : " + p_secund[2]);
+        System.out.println("Prob Planta    : " + p_secund[3]);
+        System.out.println("Prob Pl + H    : " + p_secund[4]);
+        System.out.println("Prob Feromonas : " + p_secund[5]);
+        System.out.println("Mover 0        : " + p_mov[0]);
+        System.out.println("Mover Arriba   : " + p_mov[1]);
+        System.out.println("Mover 2        : " + p_mov[2]);
+        System.out.println("Mover Izquir   : " + p_mov[3]);
+        System.out.println("Mover 4        : " + p_mov[4]);
+        System.out.println("Mover Derech   : " + p_mov[5]);
+        System.out.println("Mover 6        : " + p_mov[6]);
+        System.out.println("Mover Abajo    : " + p_mov[7]);
+        System.out.println("Mover 8        : " + p_mov[8]);
     }
     
     /**
@@ -75,16 +75,19 @@ public class Genetica {
         double tmp = Math.random();
         if (comida && (tmp < p_volver)) {
             food = false;
-            System.out.println("Volviendo a Casa.");
+            //System.out.println("Volviendo a Casa.");
             return volver(casa, actual);
         } else {
             double vector[] = new double[9];
             for (int i = 0; i < 9; i++) {
-                /* Probabilidad = Prob_Moverse *  Prob_percibido + Prob_Feromonas * Nº de feromonas */
+                /* Probabilidad = Prob_Moverse +  Prob_percibido + Prob_Feromonas */
                 if (entorno[0][i] == 1){
                     vector[i] = -1000;
                 } else {
-                    vector[i] = (((Math.random() * p_mov[i]) * p_secund[entorno[0][i]]) + p_secund[5] * entorno[1][i]);
+                    vector[i] = ((Math.random() * p_mov[i]) + (Math.random() * p_secund[entorno[0][i]]));
+                    if (entorno[1][i] > 0){
+                        vector[i] += p_secund[5]*(Math.random()/2);
+                    }
                 }
             }
             double max = vector[0];
@@ -95,7 +98,6 @@ public class Genetica {
                     indice = i;
                 }
             }
-            System.out.println();
             if (entorno[0][indice] > 2) {
                food = true; 
             } 
@@ -142,6 +144,9 @@ public class Genetica {
         }
 
         for (int j = 0; j < 6; j++) {
+            if (j == 1){
+                j++;
+            }
             alteracion = Math.random();
             if (alteracion < 0.2) {
                 double signo = Math.random();
@@ -172,20 +177,6 @@ public class Genetica {
         if ((indice == 6) || (indice == 7) || (indice == 8)) {
             y++;
         }
-        /*
-        if (x < 0){
-            x = 0; 
-        }
-        if (x > (Constante.MAX_MAPA-1)){
-            x = (Constante.MAX_MAPA-1);
-        }
-        if (y < 0){
-            y = 0; 
-        }
-        if (y > (Constante.MAX_MAPA-1)){
-            y = (Constante.MAX_MAPA-1);
-        }
-        */
         return (new Posicion(x, y));
     }
     
